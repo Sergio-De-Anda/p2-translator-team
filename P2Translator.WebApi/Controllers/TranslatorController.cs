@@ -38,7 +38,12 @@ namespace P2Translator.WebApi.Controllers
     [HttpGet("{id}")]
     public async Task<IActionResult> GetMessage(int id)
     {
-      return await Task.FromResult(Ok(_db.Message.Single(m => m.MessageId == id)));
+      var result = _db.Message.SingleOrDefault(m => m.MessageId == id);
+      if(result == null)
+        {
+        return await Task.FromResult(NotFound());
+        }
+        return await Task.FromResult(Ok(result));
     }
 
     [HttpGet("{language}")]
