@@ -56,7 +56,7 @@ stages:
         pool:
           vmImage: ubuntu-18.04
         steps:
-          - script: docker-compose -f docker-compose.yml up -d --build -t revaturep2translator/p2translator:$BUILD_NAME .
+          - script: docker image build -f ./dockerfile -t revaturep2translator/p2translator:$BUILD_NAME .
             env:
               BUILD_NAME: $(Build.DefinitionName)
           - script: docker login --username $DOCKER_USER --password $DOCKER_TOKEN
@@ -66,3 +66,24 @@ stages:
           - script: docker image push revaturep2translator/p2translator:$BUILD_NAME
             env:
               BUILD_NAME: $(Build.DefinitionName)
+  - stage: compose
+    jobs:
+      - job:
+        pool:
+          vmImage: ubuntu-18.04
+        variables:
+          azureContainerRegistry: Docker
+          azureSubscriptionEndpoint: Docker
+          BUILD_NAME: $(Build.DefinitionName)
+          Build.Repository.Name: revaturep2translator/p2translator:$BUILD_NAME
+        steps:
+          - task: DockerCompose@0
+            displayName: Run a Docker Compose command
+            inputs:
+              action: Run a Docker Compose command
+              azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+              azureContainerRegistry: $(azureContainerRegistry)
+              dockerComposeFile: docker-compose.yml 
+              projectName: $(Build.Repository.Name)
+              qualifyImageNames: true
+              dockerComposeCommand: rm
