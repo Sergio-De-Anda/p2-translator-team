@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 
 networks:
   translatorapi-dev:
@@ -6,33 +6,35 @@ networks:
 
 services:
   mvc:
-    image: mvc:latest
-    depends_on: 
-      - "api"
+    image: ${DOCKER_REGISTRY-}mvc
     build:
-      context: ../P2Translator
-      dockerfile: docker-client.dockerfile
-    ports:
-      - "5000:80"
+      context: .
+      dockerfile: P2Translator.Client/dockerfile
     volumes:
       - ./P2Translator.Client:/usr/src/app/
+    expose:
+      - "5000"
+    ports:
+      - "5000:80"
+    networks:
+      - translatorapi-dev
 
 
   api:
-    image: api:latest
+    image: ${DOCKER_REGISTRY-}api
     depends_on: 
       - "postgres_image"
     build: 
-      context: ../P2Translator
-      dockerfile: docker-api.dockerfile
+      context: .
+      dockerfile: P2Translator.WebApi/dockerfile
     volumes: 
       - ./P2Translator.WebApi:/usr/src/app
-    expose: 
+    expose:
       - "5050"
     ports:
       - "5050:80"
     environment: 
-      DB_CONNECTION_STRING: "host:postgres_image;port:5432;database:postgres;username:postgres;password:postgres"
+      - DB_CONNECTION_STRING="host:postgres_image;port:5432;database:postgres;username:postgres;password:postgres"
     networks: 
       - translatorapi-dev
 
@@ -40,7 +42,6 @@ services:
     image: postgres:alpine
     ports: 
       - "5432"
-    restart: always
     environment: 
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"

@@ -10,7 +10,7 @@ using System;
 namespace P2Translator.WebApi.Controllers 
 {
   [Produces("application/json")]
-  [Route("/api/[controller]/[action]")]
+  [Route("[controller]/[action]")]
   [ApiController]
   public class TranslatorController : ControllerBase
   {
@@ -19,6 +19,14 @@ namespace P2Translator.WebApi.Controllers
     public TranslatorController(P2TranslatorDbContext _db)
     {
         this._db = _db;
+    }
+
+    // GET Translator/SendId/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<string>> SendId(int id)
+    {
+        var TranslatorValue = "Translator (with value " + id + ")";
+        return await Task.FromResult(Ok(TranslatorValue));
     }
 
     [HttpGet]
