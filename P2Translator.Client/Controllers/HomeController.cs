@@ -26,10 +26,23 @@ namespace P2Translator.Client.Controllers
             _logger = logger;
         }
 
+        public async Task<IActionResult> Indexx()
+        {
+            ViewData["Message"] = "Hello from webfrontend";
+
+            // Call *api*, and display its response in the page
+            var client = new HttpClient();
+            var request = new HttpRequestMessage();
+            request.RequestUri = new Uri("http://api/Translator/SendId/5");
+            var response = await client.SendAsync(request);
+            ViewData["Message"] += " and " + await response.Content.ReadAsStringAsync();
+            return View();
+        }
+
         [HttpGet]
         public async Task<IActionResult> MessageBoard()
         {
-          string url = "http://localhost:5050/api/translator/getmessages";
+          string url = "http://api/Translator/getmessages";
             HttpClient request = new HttpClient();
             var response = await request.GetAsync(url);
             List<MessageViewModel> allMessages = JsonConvert.DeserializeObject<List<MessageViewModel>>(response.Content.ReadAsStringAsync().Result);
@@ -40,7 +53,7 @@ namespace P2Translator.Client.Controllers
         [HttpPost]
         public async Task<IActionResult> MessageBoard(MessageBoardViewModel board)
         {
-          string url = $"http://localhost:5050/api/translator/getmessages/{board.Language}";
+          string url = $"http://api/Translator/getmessages/{board.Language}";
             HttpClient request = new HttpClient();
             var response = await request.GetAsync(url);
             List<MessageViewModel> allMessages = JsonConvert.DeserializeObject<List<MessageViewModel>>(response.Content.ReadAsStringAsync().Result);
@@ -54,7 +67,7 @@ namespace P2Translator.Client.Controllers
           if(ModelState.IsValid)
           {
             
-            string url = $"http://localhost:5050/api/translator/post";
+            string url = $"http://api/Translator/post";
             HttpClient request = new HttpClient();
             var response = await request.PostAsJsonAsync(url, m);
             return RedirectToAction("MessageBoard", "Home");
@@ -64,7 +77,7 @@ namespace P2Translator.Client.Controllers
         }
         public async Task<IActionResult> Index()
         { 
-            string url = "http://localhost:5050/api/translator/getmessages";
+            string url = "http://api/Translator/getmessages";
             HttpClient request = new HttpClient();
             var response = await request.GetAsync(url);
             // response.Content
