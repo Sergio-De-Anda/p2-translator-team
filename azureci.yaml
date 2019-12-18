@@ -66,22 +66,21 @@ stages:
           - script: docker image push revaturep2translator/p2translator:$BUILD_NAME
             env:
               BUILD_NAME: $(Build.DefinitionName)
-  - stage: compose
-    jobs:
-      - job:
-        pool:
-          vmImage: ubuntu-18.04
-        variables:
-          BUILD_NAME: $(Build.DefinitionName)
-          Build.Repository.Name: revaturep2translator/p2translator:$BUILD_NAME
-        steps:
-          - task: DockerCompose@0
-            displayName: Run a Docker Compose command
-            inputs:
-              containerregistrytype: Container Registry
-              dockerRegistryEndpoint: Contoso
-              action: Run a Docker Compose command
-              dockerComposeFile: docker-compose.yml 
-              projectName: $(Build.Repository.Name)
-              qualifyImageNames: true
-              dockerComposeCommand: rm
+  # - stage: compose
+  #   jobs:
+  #     - job:
+  #       pool:
+  #         vmImage: ubuntu-18.04
+  #       variables:
+  #         BUILD_NAME: $(Build.DefinitionName)
+  #       steps:
+  #         - task: DockerCompose@0
+  #           displayName: Run a Docker Compose command
+  #           inputs:
+  #             containerregistrytype: Container Registry
+  #             dockerRegistryEndpoint: Contoso
+  #             action: Run a Docker Compose command
+  #             dockerComposeFile: docker-compose.yml 
+  #             projectName: revaturep2translator/p2translator:$BUILD_NAME
+  #             qualifyImageNames: true
+  #             dockerComposeCommand: rm
