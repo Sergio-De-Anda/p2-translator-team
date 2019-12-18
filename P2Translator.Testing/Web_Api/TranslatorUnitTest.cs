@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using P2Translator.WebApi.Models;
 using Xunit;
 
@@ -58,6 +59,19 @@ namespace P2Translator.Testing.Web_Api
 
       // Assert
       Assert.True(string.IsNullOrEmpty(actualResponse.Translate(messageRequest, emptyLanguage).Result));
+    }
+    [Fact]
+    public void Test_GetLanguages()
+    {
+      // Arrange
+      List<string> languages = new List<string>();
+
+      // Act out
+      Translator actualResponse = new Translator();
+      languages = actualResponse.GetLanguages();
+
+      // Assert
+      Assert.NotEmpty(languages);
     }
 
   }
