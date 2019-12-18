@@ -72,17 +72,15 @@ stages:
         pool:
           vmImage: ubuntu-18.04
         variables:
-          azureContainerRegistry: Docker
-          azureSubscriptionEndpoint: Docker
           BUILD_NAME: $(Build.DefinitionName)
           Build.Repository.Name: revaturep2translator/p2translator:$BUILD_NAME
         steps:
           - task: DockerCompose@0
             displayName: Run a Docker Compose command
             inputs:
+              containerregistrytype: Container Registry
+              dockerRegistryEndpoint: Contoso
               action: Run a Docker Compose command
-              azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
-              azureContainerRegistry: $(azureContainerRegistry)
               dockerComposeFile: docker-compose.yml 
               projectName: $(Build.Repository.Name)
               qualifyImageNames: true
