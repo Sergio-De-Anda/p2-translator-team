@@ -30,27 +30,14 @@ namespace P2Translator.WebApi.Controllers
     }
 
     [HttpGet]
-    public IActionResult GetLanguages()
-    {
-      List<string> languages = new List<string>();
-      languages.Add("Spanish");
-      languages.Add("English");
-      return Ok(languages);
-    }
-    [HttpGet]
-    public object GetMessage()
-    {
-      return _db.Message.Where(m => m.Content.Contains("Content")).Select((c) => new 
-      {
-        Id = c.MessageId,
-        Content = c.Content,
-        MessageDateTime = c.MessageDateTime
-      }).ToList();
-    }
-    [HttpGet]
     public async Task<IActionResult> GetMessages()
     {
       return await Task.FromResult(Ok(_db.Message.ToList()));
+    }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetMessage(int id)
+    {
+      return await Task.FromResult(Ok(_db.Message.Single(m => m.MessageId == id)));
     }
 
     [HttpGet("{language}")]
