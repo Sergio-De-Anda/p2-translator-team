@@ -21,15 +21,6 @@ namespace P2Translator.WebApi.Controllers
     {
         this._db = _db;
     }
-
-    // GET Translator/SendId/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<string>> SendId(int id)
-    {
-        var TranslatorValue = "Translator (with value " + id + ")";
-        return await Task.FromResult(Ok(TranslatorValue));
-    }
-
     [HttpGet]
     public async Task<IActionResult> GetMessages()
     {
@@ -38,7 +29,12 @@ namespace P2Translator.WebApi.Controllers
     [HttpGet("{id}")]
     public async Task<IActionResult> GetMessage(int id)
     {
-      return await Task.FromResult(Ok(_db.Message.Single(m => m.MessageId == id)));
+      var result = _db.Message.SingleOrDefault(m => m.MessageId == id);
+      if(result == null)
+        {
+        return await Task.FromResult(NotFound());
+        }
+        return await Task.FromResult(Ok(result));
     }
 
     [HttpGet("{language}")]
@@ -68,6 +64,12 @@ namespace P2Translator.WebApi.Controllers
         return await Task.FromResult(Ok(m));
       }
       return await Task.FromResult(NotFound(m));
+    }
+    [HttpGet]
+    public async Task<IActionResult> GetLanguages()
+    {
+      Translator languages = new Translator();
+      return await Task.FromResult(Ok(languages.GetLanguages()));
     }
   }
 }

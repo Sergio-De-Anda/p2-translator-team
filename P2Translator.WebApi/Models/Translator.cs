@@ -16,7 +16,7 @@ namespace P2Translator.WebApi.Models
     private static readonly string endpoint = "https://api-nam.cognitive.microsofttranslator.com/";
 
 
-    static Translator()
+    public Translator()
     {
       if (null == subscriptionKey)
       {
@@ -51,7 +51,6 @@ namespace P2Translator.WebApi.Models
           return translatedText.Value.ToString();
       }
     }
-
     private static string GetLanguageCode(string lang)
     {
       var langMap = new Dictionary<string, string>();
@@ -83,6 +82,33 @@ namespace P2Translator.WebApi.Models
         return langMap[lang];
       }
       return null;
+    }
+    public List<string> GetLanguages()
+    {
+      var languages = new List<string>();
+      string route = "/languages?api-version=3.0";
+      using (var client = new HttpClient())
+      using (var request = new HttpRequestMessage())
+      {
+        // Set the method to GET
+        request.Method = HttpMethod.Get;
+        // Construct the full URI
+        request.RequestUri = new Uri(endpoint + route);
+        // Send request, get response
+        var response = client.SendAsync(request).Result;
+        var jsonResponse = response.Content.ReadAsStringAsync().Result;
+        var deserialized = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+        var translation = deserialized.translation;
+        // create map <language name, language code>
+        foreach(var langCode in translation)
+        {
+          foreach(var langName in langCode)
+          {
+            languages.Add(langName.name.ToString().ToLower());
+          }
+        }
+      }
+      return languages;
     }
     public async Task<string> Translate(string message, string ToLanguage)
     {
