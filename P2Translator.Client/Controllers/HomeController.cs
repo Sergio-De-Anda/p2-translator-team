@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using P2Translator.Client.Models;
-using P2Translator.Data.Models;
+
 
 
 namespace P2Translator.Client.Controllers
@@ -32,7 +32,7 @@ namespace P2Translator.Client.Controllers
           string url = "http://localhost:5050/api/translator/getmessages";
             HttpClient request = new HttpClient();
             var response = await request.GetAsync(url);
-            List<Message> allMessages = JsonConvert.DeserializeObject<List<Message>>(response.Content.ReadAsStringAsync().Result);
+            List<MessageViewModel> allMessages = JsonConvert.DeserializeObject<List<MessageViewModel>>(response.Content.ReadAsStringAsync().Result);
             ViewBag.Messages = allMessages;
             // ViewBag.UserLanguage = "English";
             return View();
@@ -43,7 +43,7 @@ namespace P2Translator.Client.Controllers
           string url = $"http://localhost:5050/api/translator/getmessages/{board.Language}";
             HttpClient request = new HttpClient();
             var response = await request.GetAsync(url);
-            List<Message> allMessages = JsonConvert.DeserializeObject<List<Message>>(response.Content.ReadAsStringAsync().Result);
+            List<MessageViewModel> allMessages = JsonConvert.DeserializeObject<List<MessageViewModel>>(response.Content.ReadAsStringAsync().Result);
             ViewBag.Messages = allMessages;
             // ViewBag.UserLanguage = "English";
             return View();
@@ -56,9 +56,7 @@ namespace P2Translator.Client.Controllers
             
             string url = $"http://localhost:5050/api/translator/post";
             HttpClient request = new HttpClient();
-            Message newMessage = new Message();
-            newMessage.Content = m.Content;
-            var response = await request.PostAsJsonAsync(url, newMessage);
+            var response = await request.PostAsJsonAsync(url, m);
             return RedirectToAction("MessageBoard", "Home");
           }
           return RedirectToAction("MessageBoard", "Home");
@@ -72,7 +70,7 @@ namespace P2Translator.Client.Controllers
             // response.Content
             // var response = client(request).Result;
             // var jsonResponse = response.Content.ReadAsStringAsync().Result;
-            var deserialized = JsonConvert.DeserializeObject<List<Message>>(response.Content.ReadAsStringAsync().Result);
+            var deserialized = JsonConvert.DeserializeObject<List<MessageViewModel>>(response.Content.ReadAsStringAsync().Result);
             foreach(var m in deserialized)
               Console.WriteLine(m.Content);
             return View();
