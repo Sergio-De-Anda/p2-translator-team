@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using P2Translator.Client.Models;
+using P2Translator.Data.Models;
 
 
 
@@ -42,13 +43,13 @@ namespace P2Translator.Client.Controllers
         [HttpGet]
         public async Task<IActionResult> MessageBoard()
         {
-          string url = "http://api/Translator/getmessages";
-            HttpClient request = new HttpClient();
-            var response = await request.GetAsync(url);
-            List<MessageViewModel> allMessages = JsonConvert.DeserializeObject<List<MessageViewModel>>(response.Content.ReadAsStringAsync().Result);
-            ViewBag.Messages = allMessages;
-            // ViewBag.UserLanguage = "English";
-            return View();
+          var client = new HttpClient();
+          var request = new HttpRequestMessage();
+          request.RequestUri = new Uri("http://api/Translator/GetMessages");
+          var response = await client.GetAsync(request.RequestUri);
+          List<Message> allMessages = JsonConvert.DeserializeObject<List<Message>>(response.Content.ReadAsStringAsync().Result);
+          ViewBag.Messages = allMessages;
+          return View();
         }
         [HttpPost]
         public async Task<IActionResult> MessageBoard(MessageBoardViewModel board)
@@ -58,7 +59,6 @@ namespace P2Translator.Client.Controllers
             var response = await request.GetAsync(url);
             List<MessageViewModel> allMessages = JsonConvert.DeserializeObject<List<MessageViewModel>>(response.Content.ReadAsStringAsync().Result);
             ViewBag.Messages = allMessages;
-            // ViewBag.UserLanguage = "English";
             return View();
         }
         [HttpPost]
@@ -80,9 +80,6 @@ namespace P2Translator.Client.Controllers
             string url = "http://api/Translator/getmessages";
             HttpClient request = new HttpClient();
             var response = await request.GetAsync(url);
-            // response.Content
-            // var response = client(request).Result;
-            // var jsonResponse = response.Content.ReadAsStringAsync().Result;
             var deserialized = JsonConvert.DeserializeObject<List<MessageViewModel>>(response.Content.ReadAsStringAsync().Result);
             foreach(var m in deserialized)
               Console.WriteLine(m.Content);

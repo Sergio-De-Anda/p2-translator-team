@@ -15,7 +15,7 @@ namespace P2Translator.Data
     public DbSet<Message> Message { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-      optionsBuilder.UseNpgsql("server=localhost;database=postgres;user id=postgres;password=postgres");
+      optionsBuilder.UseNpgsql("server=postgres_image;database=postgres;user id=postgres;password=postgres");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

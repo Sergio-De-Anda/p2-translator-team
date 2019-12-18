@@ -32,7 +32,7 @@ namespace P2Translator.WebApi
             var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
             if(connectionString == null)
             {
-              Environment.SetEnvironmentVariable("DB_CONNECTION_STRING", "host:postgres_image;port:5432;database:postgres;username:postgres;password:postgres");
+              Environment.SetEnvironmentVariable("DB_CONNECTION_STRING", "server=postgres_image;port=5432;database=postgres;username=postgres;password=postgres");
               connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
             }            
             services.AddDbContext<P2TranslatorDbContext>(options => options.UseNpgsql(connectionString));
@@ -45,17 +45,30 @@ namespace P2Translator.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             // app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            UpdateDatabase(app);
             // app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private static void UpdateDatabase(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<P2TranslatorDbContext>())
+                {
+                    context.Database.Migrate();
+                }
+            }
         }
     }
 }
