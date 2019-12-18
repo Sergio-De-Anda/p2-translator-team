@@ -7,4 +7,4 @@ RUN dotnet publish --no-restore -c Release -o out
 FROM mcr.microsoft.com/dotnet/core/aspnet
 WORKDIR /dist
 COPY --from=build /aspnet/out .
-CMD [ "dotnet", "P2Translator.Client.dll" ]
+CMD [ "docker-compose", "build"]
