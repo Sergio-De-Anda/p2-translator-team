@@ -50,37 +50,33 @@ stages:
             env:
               SONAR_TOKEN: $(SONAR_LOGIN)
 
-  - stage: pack
+  - stage: pack-compose
     jobs:
       - job:
         pool:
           vmImage: ubuntu-18.04
         steps:
-          - script: docker image build -f ./dockerfile -t revaturep2translator/p2translator:$BUILD_NAME .
+          - script: docker image build -f ./P2Translator.Client/dockerfile -t revaturep2translator/p2translator:mvc .
             env:
               BUILD_NAME: $(Build.DefinitionName)
           - script: docker login --username $DOCKER_USER --password $DOCKER_TOKEN
             env:
               DOCKER_TOKEN: $(docker.token)
               DOCKER_USER: $(docker.user)
-          - script: docker image push revaturep2translator/p2translator:$BUILD_NAME
+          - script: docker image push revaturep2translator/p2translator:mvc
             env:
               BUILD_NAME: $(Build.DefinitionName)
-  # - stage: compose
-  #   jobs:
-  #     - job:
-  #       pool:
-  #         vmImage: ubuntu-18.04
-  #       variables:
-  #         BUILD_NAME: $(Build.DefinitionName)
-  #       steps:
-  #         - task: DockerCompose@0
-  #           displayName: Run a Docker Compose command
-  #           inputs:
-  #             containerregistrytype: Container Registry
-  #             dockerRegistryEndpoint: Contoso
-  #             action: Run a Docker Compose command
-  #             dockerComposeFile: docker-compose.yml 
-  #             projectName: revaturep2translator/p2translator:$BUILD_NAME
-  #             qualifyImageNames: true
-  #             dockerComposeCommand: rm
+      - job:
+        pool:
+          vmImage: ubuntu-18.04
+        steps:
+          - script: docker image build -f ./P2Translator.WebApi/dockerfile -t revaturep2translator/p2translator:api .
+            env:
+              BUILD_NAME: $(Build.DefinitionName)
+          - script: docker login --username $DOCKER_USER --password $DOCKER_TOKEN
+            env:
+              DOCKER_TOKEN: $(docker.token)
+              DOCKER_USER: $(docker.user)
+          - script: docker image push revaturep2translator/p2translator:api
+            env:
+              BUILD_NAME: $(Build.DefinitionName)
