@@ -16,5 +16,21 @@ namespace P2Translator.Testing.Client
       Assert.NotNull(messageboard);
       
     }
+    [Fact]
+    public void TestPrivacy()
+    {
+      var home = new HomeController(logger);
+      var privacy = home.Privacy();
+      Assert.NotNull(privacy);
+      
+    }
+    [Fact]
+    public void TestIndex()
+    {
+      var home = new HomeController(logger);
+      var index = home.Index();
+      Assert.NotNull(index);
+      
+    }
   }
 }
