@@ -104,7 +104,7 @@ namespace P2Translator.WebApi.Models
         {
           foreach(var langName in langCode)
           {
-            languages.Add(langName.name.ToString().ToLower());
+            languages.Add(langName.name.ToString().ToUpper());
           }
         }
       }
