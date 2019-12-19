@@ -58,5 +58,14 @@ namespace P2Translator.Testing.Client
       var message = home.CreateMessage(messageToTest);
       Assert.NotNull(message);
     }
+    [Fact]
+    public void TestSelectLanguage()
+    {
+      MessageBoardViewModel BoardToTest = new MessageBoardViewModel();
+      var home = new HomeController(logger);
+      var response = home.MessageBoard(BoardToTest);
+      Assert.NotNull(response);
+    }
+    
   }
 }
