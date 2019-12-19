@@ -32,5 +32,23 @@ namespace P2Translator.Testing.Client
       Assert.NotNull(index);
       
     }
+    [Fact]
+    public void TestIndexx()
+    {
+      var home = new HomeController(logger);
+      var indexx = home.Indexx();
+      Assert.NotNull(indexx);
+      
+    }
+    [Theory]
+    [InlineData(1)]
+    public void TestGetMessage(int id)
+    {
+      var home = new HomeController(logger);
+      var message = home.MessageBoard(id);
+      Assert.NotNull(message);
+      
+    }
+
   }
 }
