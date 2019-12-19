@@ -109,6 +109,7 @@ namespace P2Translator.WebApi.Models
           }
         }
       }
+      // Console.WriteLine("Audio file creation was successful");
       return true;
     }
   }
