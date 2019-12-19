@@ -16,11 +16,11 @@ namespace P2Translator.WebApi.Models
     {
       if (string.IsNullOrWhiteSpace(tokenFetchUri))
       {
-          throw new ArgumentNullException(nameof(tokenFetchUri));
+        throw new ArgumentNullException(nameof(tokenFetchUri));
       }
       if (string.IsNullOrWhiteSpace(subscriptionKey))
       {
-          throw new ArgumentNullException(nameof(subscriptionKey));
+        throw new ArgumentNullException(nameof(subscriptionKey));
       }
     }
     private async Task<string> FetchTokenAsync()
@@ -41,19 +41,6 @@ namespace P2Translator.WebApi.Models
       {
         return false;
       }
-      // string accessToken;
-
-      // try
-      // {
-      //     accessToken = await FetchTokenAsync().ConfigureAwait(false);
-      //     // Console.WriteLine("Successfully obtained an access token. \n");
-      // }
-      // catch (Exception ex)
-      // {
-      //     // Console.WriteLine("Failed to obtain an access token.");
-      //     Console.WriteLine(ex.ToString());
-      //     Console.WriteLine(ex.Message);
-      // }
 
       string host = "https://centralus.tts.speech.microsoft.com/cognitiveservices/v1";
 
@@ -100,7 +87,7 @@ namespace P2Translator.WebApi.Models
             // Asynchronously read the response
             using (Stream dataStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
             {
-              using (FileStream fileStream = new FileStream(@"Output.wav", FileMode.Create, FileAccess.Write, FileShare.Write))
+              using (FileStream fileStream = new FileStream(@"../Output.wav", FileMode.Create, FileAccess.Write, FileShare.Write))
               {
                   await dataStream.CopyToAsync(fileStream).ConfigureAwait(false);
                   fileStream.Close();
