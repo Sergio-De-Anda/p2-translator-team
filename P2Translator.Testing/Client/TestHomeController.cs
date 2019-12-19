@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using P2Translator.Client.Controllers;
+using P2Translator.Client.Models;
 using Xunit;
 
 namespace P2Translator.Testing.Client
@@ -49,6 +50,13 @@ namespace P2Translator.Testing.Client
       Assert.NotNull(message);
       
     }
-
+    [Fact]
+    public void TestMakeMessage()
+    {
+      MessageViewModel messageToTest = new MessageViewModel();
+      var home = new HomeController(logger);
+      var message = home.CreateMessage(messageToTest);
+      Assert.NotNull(message);
+    }
   }
 }
