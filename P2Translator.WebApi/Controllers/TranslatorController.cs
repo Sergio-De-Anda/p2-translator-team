@@ -71,6 +71,12 @@ namespace P2Translator.WebApi.Controllers
       Translator languages = new Translator();
       return await Task.FromResult(Ok(languages.GetLanguages()));
     }
+    [HttpGet]
+    public async Task<IActionResult> GetVoices()
+    {
+      Speech sch = new Speech();
+      return await Task.FromResult(Ok(sch.GetVoices().Result));
+    }
     [HttpPost]
     public async Task<IActionResult> CreateAudio(Message m)
     {
