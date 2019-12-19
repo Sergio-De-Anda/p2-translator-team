@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using P2Translator.Client.Models;
-using P2Translator.Data.Models;
 
 
 
@@ -47,9 +46,19 @@ namespace P2Translator.Client.Controllers
           var request = new HttpRequestMessage();
           request.RequestUri = new Uri("http://api/Translator/GetMessages");
           var response = await client.GetAsync(request.RequestUri);
-          List<Message> allMessages = JsonConvert.DeserializeObject<List<Message>>(response.Content.ReadAsStringAsync().Result);
+          List<MessageViewModel> allMessages = JsonConvert.DeserializeObject<List<MessageViewModel>>(response.Content.ReadAsStringAsync().Result);
           ViewBag.Messages = allMessages;
           return View();
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> MessageBoard(int id)
+        {
+          string url = $"http://api/Translator/getmessage/{id}";
+          HttpClient request = new HttpClient();
+          var response = await request.GetAsync(url);
+          MessageViewModel message = JsonConvert.DeserializeObject<MessageViewModel>(response.Content.ReadAsStringAsync().Result);
+          ViewBag.Message = message;
+          return View("Message");
         }
         [HttpPost]
         public async Task<IActionResult> MessageBoard(MessageBoardViewModel board)
