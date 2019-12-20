@@ -42,20 +42,21 @@
       <div class="col-sm-3">
       <div class="card border-primary mb-3">
       <div class="card-header bg-transparent border-primary text-success">
-      <a href="/home/messageboard/message/@m.MessageId">Message @m.MessageId</a>
+      <a href="/home/messageboard/@m.MessageId">Message @m.MessageId</a>
       
       <script> 
+        "use strict";        
         function PlaySound(text) {
           var msg = new SpeechSynthesisUtterance(text);
           window.speechSynthesis.speak(msg);
-        });
+        };
       </script>
       <button id="@m.MessageId" type="submit" onclick="PlaySound('@m.Content');" class="btn btn-primary">Speak</button>
 
       </div>
         <div class="card-body">
           <h5 class="card-title">
-            @m.Content.ToUpper()
+            @m.Content
           </h5>
       </div>
       <div class="card-footer bg-transparent border-primary text-danger">@m.MessageDateTime</div>
