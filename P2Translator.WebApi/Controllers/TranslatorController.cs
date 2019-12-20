@@ -6,7 +6,6 @@ using P2Translator.Data;
 using P2Translator.Data.Models;
 using P2Translator.WebApi.Models;
 using System;
-using Newtonsoft.Json;
 
 namespace P2Translator.WebApi.Controllers 
 {

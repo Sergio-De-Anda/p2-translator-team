@@ -11,8 +11,8 @@ namespace P2Translator.WebApi.Models
 {
   public class Speech
   {
-    private string subscriptionKey = "5dbb936323894a3abead86291b52d1b4";
-    private string tokenFetchUri = "https://centralus.api.cognitive.microsoft.com/sts/v1.0/issuetoken";
+    private readonly string subscriptionKey = "5dbb936323894a3abead86291b52d1b4";
+    private readonly string tokenFetchUri = "https://centralus.api.cognitive.microsoft.com/sts/v1.0/issuetoken";
 
     public Speech()
     {
@@ -129,7 +129,6 @@ namespace P2Translator.WebApi.Models
           }
         }
       }
-      // Console.WriteLine("Audio file creation was successful");
       return true;
     }
   }

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -80,7 +77,7 @@ namespace P2Translator.Client.Controllers
           {
             string url = $"http://api/Translator/post";
             HttpClient request = new HttpClient();
-            var response = await request.PostAsJsonAsync(url, m);
+            await request.PostAsJsonAsync(url, m);
             return RedirectToAction("MessageBoard", "Home");
           }
           return RedirectToAction("MessageBoard", "Home");
@@ -123,7 +120,7 @@ namespace P2Translator.Client.Controllers
         {
           string url = $"http://api/Translator/CreateAudio";
           HttpClient request = new HttpClient();
-          var response = await request.PostAsJsonAsync(url, m);
+          await request.PostAsJsonAsync(url, m);
         }
     }
 }
