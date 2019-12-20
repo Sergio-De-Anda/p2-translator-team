@@ -14,18 +14,30 @@
     </div>
   </div>
 
-  <div class="col-sm-3">
+  <div class="col-sm-12">
       <div class="card border-primary mb-3">
       <div class="card-header bg-transparent border-primary text-success">Message @ViewBag.Message.MessageId</a></div>
         <div class="card-body">
           <h5 class="card-title">
-            @ViewBag.Message.Content
+            @ViewBag.Message.Content.ToUpper()
           </h5>
-      </div>
+        </div>
       <div class="card-footer bg-transparent border-primary text-danger">@ViewBag.Message.MessageDateTime</div>
       </div>
+  </div>
+
+  @* <div class="col-sm-12">
+      <div class="card border-primary mb-3">
+      <div class="card-header bg-transparent border-primary text-success">Play Audio</a></div>
+        <div class="card-body">
+          <h5 class="card-title">
+            <audio controls>
+                <source src="~/Speech.wav" type='audio/wav'>
+            </audio>
+          </h5>
+        </div>
       </div>
+  </div> *@
 
 </div>
-
 </div>  

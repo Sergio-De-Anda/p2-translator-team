@@ -120,10 +120,10 @@ namespace P2Translator.WebApi.Models
             // Asynchronously read the response
             using (Stream dataStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
             {
-              using (FileStream fileStream = new FileStream(@"../Output.wav", FileMode.Create, FileAccess.Write, FileShare.Write))
+              using (FileStream fileStream = new FileStream(@"../P2Translator.Client/wwwroot/Speech.wav", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
               {
-                  await dataStream.CopyToAsync(fileStream).ConfigureAwait(false);
-                  fileStream.Close();
+                await dataStream.CopyToAsync(fileStream).ConfigureAwait(false);
+                fileStream.Close();
               }
             }
           }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -17,8 +18,6 @@ namespace P2Translator.Client.Controllers
   [Route("/[controller]/[action]")]
     public class HomeController : Controller
     {
-        private readonly HttpClientModel _http = new HttpClientModel();
-
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -52,14 +51,15 @@ namespace P2Translator.Client.Controllers
           return View();
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> MessageBoard(int id)
+        [Route("/[controller]/MessageBoard/[action]/{id}")]
+        public async Task<IActionResult> Message(int id)
         {
           string url = $"http://api/Translator/getmessage/{id}";
           HttpClient request = new HttpClient();
           var response = await request.GetAsync(url);
           MessageViewModel message = JsonConvert.DeserializeObject<MessageViewModel>(response.Content.ReadAsStringAsync().Result);
           ViewBag.Message = message;
-          ViewBag.Languages = GetLanguages().Result;
+          await Task.FromResult(CreateAudioFile(message));
           return View("Message");
         }
         [HttpPost]
@@ -117,6 +117,13 @@ namespace P2Translator.Client.Controllers
           List<string> allLanguges = JsonConvert.DeserializeObject<List<string>>(responseLanguages.Content.ReadAsStringAsync().Result);
          
           return allLanguges;
+        }
+
+        private async Task CreateAudioFile(MessageViewModel m)
+        {
+          string url = $"http://api/Translator/CreateAudio";
+          HttpClient request = new HttpClient();
+          var response = await request.PostAsJsonAsync(url, m);
         }
     }
 }
