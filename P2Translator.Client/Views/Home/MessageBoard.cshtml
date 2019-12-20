@@ -27,7 +27,7 @@
               <option value = "spanish">Spanish</option>
               <option value = "german">German</option>
               <option value = "french">French</option>
-            </select>
+            </select>            
           </div>
           <div class="col-3 my-3">
             <button type="submit" class="btn btn-primary">Change Language</button>
@@ -41,7 +41,23 @@
     {
       <div class="col-sm-3">
       <div class="card border-primary mb-3">
-      <div class="card-header bg-transparent border-primary text-success"><a href="/home/messageboard/@m.MessageId">Message @m.MessageId</a></div>
+      <div class="card-header bg-transparent border-primary text-success">
+      <a href="/home/messageboard/@m.MessageId">Message @m.MessageId</a>
+      
+      <script> 
+
+        "use strict";
+        var id = @m.MessageId;
+        
+        function PlaySound(text) {
+          var msg = new SpeechSynthesisUtterance(text);
+          window.speechSynthesis.speak(msg);
+        });
+
+      </script>
+      <button id="@m.MessageId" type="submit" onclick="PlaySound('@m.Content');" class="btn btn-primary">Speak</button>
+
+      </div>
         <div class="card-body">
           <h5 class="card-title">
             @m.Content

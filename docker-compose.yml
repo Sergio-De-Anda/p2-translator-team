@@ -7,11 +7,11 @@ networks:
 services:
   mvc:
     image: revaturep2translator/p2translator:mvc
-    # build:
-    #   context: .
-    #   dockerfile: P2Translator.Client/dockerfile
+    build:
+      context: .
+      dockerfile: ./P2Translator.Client/dockerfile
     volumes:
-      - MVC:/usr/local/src/app/
+      - ./P2Translator.Client:/usr/src/app/
     expose:
       - "5000"
     ports:
@@ -24,11 +24,11 @@ services:
     image: revaturep2translator/p2translator:api
     depends_on: 
       - "postgres_image"
-    # build: 
-    #   context: .
-    #   dockerfile: P2Translator.WebApi/dockerfile
+    build: 
+      context: .
+      dockerfile: ./P2Translator.WebApi/dockerfile
     volumes: 
-      - WebApi:/usr/api/src/app
+      - ./P2Translator.WebApi:/usr/src/app/
     expose:
       - "5050"
     ports:

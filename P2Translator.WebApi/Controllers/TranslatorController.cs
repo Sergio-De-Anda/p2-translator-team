@@ -76,8 +76,10 @@ namespace P2Translator.WebApi.Controllers
     {
       Speech sch = new Speech();
       // testing
-      if(await sch.TextToSpeech("Hello World", "English"))
+      if(await sch.TextToSpeech(m.Content, "English"))
+      {
         return await Task.FromResult(Ok(m));
+      }
       return await Task.FromResult(BadRequest(m));
     }
   }
