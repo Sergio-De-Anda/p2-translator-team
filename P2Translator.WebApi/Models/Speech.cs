@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Newtonsoft.Json;
 
 namespace P2Translator.WebApi.Models
 {
@@ -33,6 +35,37 @@ namespace P2Translator.WebApi.Models
           HttpResponseMessage result = await client.PostAsync(uriBuilder.Uri.AbsoluteUri, null).ConfigureAwait(false);
           return await result.Content.ReadAsStringAsync().ConfigureAwait(false);
       }
+    }
+    public async Task<List<Voice>> GetVoices()
+    {
+      string host = "https://centralus.tts.speech.microsoft.com/cognitiveservices/voices/list";
+      List<Voice> voices = new List<Voice>();
+      using(HttpClient client = new HttpClient())
+      {
+        using(HttpRequestMessage request = new HttpRequestMessage())
+        {
+          // Set the HTTP method
+          request.Method = HttpMethod.Get;
+          // Construct the URI
+          request.RequestUri = new Uri(host);
+          // Set additional header, such as Authorization and User-Agent
+          try{
+            request.Headers.Add("Authorization", "Bearer " + await FetchTokenAsync().ConfigureAwait(false));
+          }
+          catch(Exception ex)
+          {
+            Console.WriteLine(ex.ToString());
+            Console.WriteLine(ex.Message);
+            return null;
+          }
+          using (HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false))
+          {
+            response.EnsureSuccessStatusCode();
+            voices = JsonConvert.DeserializeObject<List<Voice>>(response.Content.ReadAsStringAsync().Result);
+          }
+        }
+      }
+      return voices;
     }
 
     public async Task<bool> TextToSpeech(string text, string language)

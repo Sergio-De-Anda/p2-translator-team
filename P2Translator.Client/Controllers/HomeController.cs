@@ -48,6 +48,7 @@ namespace P2Translator.Client.Controllers
           var response = await client.GetAsync(request.RequestUri);
           List<MessageViewModel> allMessages = JsonConvert.DeserializeObject<List<MessageViewModel>>(response.Content.ReadAsStringAsync().Result);
           ViewBag.Messages = allMessages;
+          ViewBag.Languages = GetLanguages().Result;
           return View();
         }
         [HttpGet("{id}")]
@@ -58,24 +59,25 @@ namespace P2Translator.Client.Controllers
           var response = await request.GetAsync(url);
           MessageViewModel message = JsonConvert.DeserializeObject<MessageViewModel>(response.Content.ReadAsStringAsync().Result);
           ViewBag.Message = message;
+          ViewBag.Languages = GetLanguages().Result;
           return View("Message");
         }
         [HttpPost]
         public async Task<IActionResult> MessageBoard(MessageBoardViewModel board)
         {
           string url = $"http://api/Translator/getmessages/{board.Language}";
-            HttpClient request = new HttpClient();
-            var response = await request.GetAsync(url);
-            List<MessageViewModel> allMessages = JsonConvert.DeserializeObject<List<MessageViewModel>>(response.Content.ReadAsStringAsync().Result);
-            ViewBag.Messages = allMessages;
-            return View();
+          HttpClient request = new HttpClient();
+          var response = await request.GetAsync(url);
+          List<MessageViewModel> allMessages = JsonConvert.DeserializeObject<List<MessageViewModel>>(response.Content.ReadAsStringAsync().Result);
+          ViewBag.Messages = allMessages;
+          ViewBag.Languages = GetLanguages().Result;
+          return View();
         }
         [HttpPost]
         public async Task<IActionResult> CreateMessage(MessageViewModel m)
         {
           if(ModelState.IsValid)
           {
-            
             string url = $"http://api/Translator/post";
             HttpClient request = new HttpClient();
             var response = await request.PostAsJsonAsync(url, m);
@@ -104,6 +106,17 @@ namespace P2Translator.Client.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private async Task<List<string>> GetLanguages()
+        {
+          var client = new HttpClient();
+          var requestGetLanguages = new HttpRequestMessage();
+          requestGetLanguages.RequestUri = new Uri("http://api/Translator/GetLanguages");
+          var responseLanguages = await client.GetAsync(requestGetLanguages.RequestUri);
+          List<string> allLanguges = JsonConvert.DeserializeObject<List<string>>(responseLanguages.Content.ReadAsStringAsync().Result);
+         
+          return allLanguges;
         }
     }
 }

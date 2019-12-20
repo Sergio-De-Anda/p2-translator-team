@@ -22,12 +22,12 @@
           <div class="col-9 my-6">
             <label class="mr-sm-1 sr-only" for="inlineFormCustomSelect">Preference</label>
             <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="Language">
-              <option selected>Select language...</option>
-              <option value = "english">English</option>
-              <option value = "spanish">Spanish</option>
-              <option value = "german">German</option>
-              <option value = "french">French</option>
-            </select>            
+                <option selected>Select language...</option>
+                 @foreach(var m in ViewBag.Languages)
+                {
+                  <option value = "@m" class="text-success">@m</option>
+                }
+            </select>
           </div>
           <div class="col-3 my-3">
             <button type="submit" class="btn btn-primary">Change Language</button>
@@ -45,15 +45,10 @@
       <a href="/home/messageboard/@m.MessageId">Message @m.MessageId</a>
       
       <script> 
-
-        "use strict";
-        var id = @m.MessageId;
-        
         function PlaySound(text) {
           var msg = new SpeechSynthesisUtterance(text);
           window.speechSynthesis.speak(msg);
         });
-
       </script>
       <button id="@m.MessageId" type="submit" onclick="PlaySound('@m.Content');" class="btn btn-primary">Speak</button>
 

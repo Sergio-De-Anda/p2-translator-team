@@ -43,6 +43,17 @@ namespace P2Translator.Testing.Web_Api
       Assert.False(actualResponse.Result);
     }
 
+    [Fact]
+    public void Test_GetVoices()
+    {
+      // Arrange
+      Speech sch = new Speech();
+
+      // Act out
+      var actualResponse = sch.GetVoices();
       
+      // Assert
+      Assert.NotEmpty(actualResponse.Result);
+    }      
   }
 }
