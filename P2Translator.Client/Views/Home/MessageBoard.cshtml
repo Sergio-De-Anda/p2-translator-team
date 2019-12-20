@@ -49,7 +49,7 @@
         function PlaySound(text) {
           var msg = new SpeechSynthesisUtterance(text);
           window.speechSynthesis.speak(msg);
-        };
+        });
       </script>
       <button id="@m.MessageId" type="submit" onclick="PlaySound('@m.Content');" class="btn btn-primary">Speak</button>
 
