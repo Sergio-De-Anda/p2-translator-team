@@ -46,9 +46,8 @@ namespace P2Translator.Testing.Client
     public void TestGetMessage(int id)
     {
       var home = new HomeController(logger);
-      var message = home.MessageBoard(id);
+      var message = home.Message(id);
       Assert.NotNull(message);
-      
     }
     [Fact]
     public void TestMakeMessage()
