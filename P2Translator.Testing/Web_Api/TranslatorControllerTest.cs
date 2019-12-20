@@ -51,6 +51,6 @@ namespace P2Translator.Testing.Web_Api
       var home = new TranslatorController(_db);
       var result = home.GetLanguages();
       Assert.NotNull(result);
-    }
+    } 
   }
 }
