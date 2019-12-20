@@ -48,7 +48,7 @@ namespace P2Translator.Client.Controllers
           return View();
         }
         [HttpGet("{id}")]
-        [Route("/[controller]/MessageBoard/[action]/{id}")]
+        [Route("/[controller]/[action]/{id}")]
         public async Task<IActionResult> Message(int id)
         {
           string url = $"http://api/Translator/getmessage/{id}";
